@@ -8,6 +8,7 @@ dependencies = [
     "matplotlib>=3.10.1",
     "mediapipe>=0.10.21",
     "opencv-python>=4.11.0.86",
+    "pandas>=2.2.3",
 ]
 
 [dependency-groups]
