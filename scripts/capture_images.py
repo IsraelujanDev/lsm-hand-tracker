@@ -52,6 +52,11 @@ cap  = cv2.VideoCapture(0)
 root = tk.Tk()
 root.title("LSM Webcam UI")
 
+# LSM: letters that REQUIRE motion
+# Sources   J, K, M, Q, X need an explicit wrist/hand motion to be recognized.
+#           Z is also drawn in the air as a 'Z'
+DYNAMIC_LETTERS = {"J", "K", "M", "Q", "X", "Z"}
+
 # Letter selector
 selected_letter = tk.StringVar(value="A")
 letter_dropdown = ttk.Combobox(
@@ -91,6 +96,7 @@ def capture_frame():
     # Meta & file paths
     image_id   = str(uuid.uuid4())
     letter     = selected_letter.get()
+    gesture_type  = "dynamic" if letter in DYNAMIC_LETTERS else "static"
     img_name   = f"{image_id}.png"
     img_path   = os.path.join(base_path, "data/images", img_name)
     json_path  = os.path.join(base_path, "data/metadata", f"{image_id}.json")
@@ -124,6 +130,7 @@ def capture_frame():
     metadata = {
         "image"               : img_name,
         "letter"              : letter,
+        "gesture_type"        : gesture_type,
         "timestamp"           : datetime.now(timezone.utc).isoformat(),
         "image_size"          : list(frame.shape[1::-1]),      # [width, height]
         "hand_count"          : hand_count,
