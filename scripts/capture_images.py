@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 # Load variables from .env file for local development or get it from the environment variables in production
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    load_dotenv(override=True)
 except ImportError:
     pass
 

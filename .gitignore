@@ -1,8 +1,10 @@
 .env
 .venv
 
-data/images/*
-data/metadata/*
-data/annotations/*
+data/processed/images/*
+data/processed/videos/*
+data/processed/not_detected/*
+data/metadata/OLD
 data/raw/*
-data/video/*
+
+temp
