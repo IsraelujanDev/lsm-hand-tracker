@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Webcam from '../components/Webcam.astro';
+import ControlPanel from '../components/ControlPanel.astro';
+---
+<Layout>
+	<h1>LSM APP</h1>
+	<div class="camera-and-options">
+		<Webcam/>
+		<ControlPanel/>
+	</div>
+
+
+</Layout>
+
+<style>
+	.camera-and-options {
+		display: flex;
+		flex-direction: row;
+		overflow: hidden;
+	}
+
+	@media (max-width:760px) {
+        .camera-and-options {
+            flex-direction: column;
+        }
+    }
+
+
+</style>

@@ -1,0 +1,39 @@
+---
+import Button from "./Button.astro"
+import CameraUp from "../assets/camera-up.astro"
+import HandClick from "../assets/hand-click.astro"
+import PhotoUp from "../assets/photo-up.astro"
+---
+
+
+<div class="control-panel">
+    <Button buttonID='selectGesture' label='Select Gesture'>
+        <HandClick/>
+    </Button>
+    <Button buttonID='startCapturing' label='Start Capturing'>
+        <CameraUp/>
+    </Button>
+    <Button buttonID='loadImages' label='Load Images'>
+        <PhotoUp/>
+    </Button>
+</div>
+
+<style>
+    .control-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+        background-color: var(--color-bg-normal);
+
+        border: 4px var(--color-bg-lighter) solid;
+        border-radius: 8px;
+    }
+
+    @media (max-width:760px) {
+        .control-panel {
+            flex-direction: column;
+        }
+    }
+</style>
