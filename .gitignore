@@ -7,4 +7,5 @@ data/processed/not_detected/*
 data/metadata/OLD
 data/raw/*
 
+__pycache__
 temp
