@@ -161,7 +161,7 @@ with HandLandmarker.create_from_options(options) as landmarker:
                     (tip["y"] - w["y"])**2 +
                     (tip["z"] - w["z"])**2
                 )
-                dists[f"{side}_{finger}_dist"] = d
+                dists[f"{finger}_dist"] = d
 
             # 2) Angles at each MCP joint
             angs = {}
@@ -180,7 +180,7 @@ with HandLandmarker.create_from_options(options) as landmarker:
                 # Compute angle (in degrees) between v1 and v2
                 cos_angle = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2) + 1e-6)
                 angle = float(math.degrees(math.acos(np.clip(cos_angle, -1.0, 1.0))))
-                angs[f"{side}_{finger}_angle"] = angle
+                angs[f"{finger}_angle"] = angle
 
             engineered[side] = {
                 "distances": dists,
