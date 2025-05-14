@@ -25,7 +25,7 @@ PROCESSED_DIR     = BASE_PATH / "data" / "processed"
 IMAGES_DIR        = PROCESSED_DIR / "images"
 VIDEOS_DIR        = PROCESSED_DIR / "videos"
 NOT_DETECTED_DIR  = PROCESSED_DIR / "not_detected"
-METADATA_DIR      = BASE_PATH / "data" / "metadata"
+METADATA_DIR      = PROCESSED_DIR / "metadata"
 MODELS_DIR        = BASE_PATH / "models"
 MODEL_PATH        = MODELS_DIR / "hand_landmarker.task"
 
@@ -69,7 +69,7 @@ def set_base_path(path):
     IMAGES_DIR    = PROCESSED_DIR / "images"
     VIDEOS_DIR    = PROCESSED_DIR / "videos"
     NOT_DETECTED_DIR = PROCESSED_DIR / "not_detected"
-    METADATA_DIR  = BASE_PATH / "data" / "metadata"
+    METADATA_DIR  = PROCESSED_DIR / "metadata"
     MODELS_DIR    = BASE_PATH / "models"
     MODEL_PATH    = MODELS_DIR / "hand_landmarker.task"
 
