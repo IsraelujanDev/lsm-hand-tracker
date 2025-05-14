@@ -17,27 +17,55 @@ The project is currently in the **experimental phase**, focusing on setting up t
 
 ## Project Structure
 ```
-Mexican Sign Language/
-├── app/                            # Placeholder for future application logic (e.g., frontend/backend)
-├── data/                           # Data directory for all resources used in experiments
-│   ├── annotations/                # Manual or auto-generated gesture annotations
-│   ├── images/                     # Processed images used for gesture recognition
-│   ├── metadata/                   # Supplementary metadata (e.g., labels, sources)
-│   ├── raw/                        # Unprocessed/raw image and video files
-├── models/                         # Pretrained models (.task) and trained weights
-├── notebooks/                      # Jupyter notebooks for experimentation and visualization
-│   ├── mediapipe_new_api.ipynb     # Notebook using the new MediaPipe Tasks API
-│   ├── mediapipe_new_api_simple.ipynb  # Minimal example for quick testing
-├── scripts/                        # Utility and demo scripts
-│   ├── test_video_hand_detector_old_api.py  # Real-time detection using legacy MediaPipe API
-├── .python-version                 # Defines the Python version for reproducibility
-├── pyproject.toml                  # Project configuration and dependency definitions (UV)
-├── uv.lock                         # Locked dependency versions for deterministic builds
-├── README.md                       # Project overview and usage instructions
-
+├── LICENSE            <- Open-source license if one is chosen
+├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
+├── README.md          <- The top-level README for developers using this project.
+├── data
+│   ├── external       <- Data from third party sources.
+│   ├── interim        <- Intermediate data that has been transformed.
+│   ├── processed      <- The final, canonical data sets for modeling.
+│   └── raw            <- The original, immutable data dump.
+│
+├── docs               <- A default mkdocs project; see www.mkdocs.org for details
+│
+├── models             <- Trained and serialized models, model predictions, or model summaries
+│
+├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
+│                         the creator's initials, and a short `-` delimited description, e.g.
+│                         `1.0-jqp-initial-data-exploration`.
+│
+├── pyproject.toml     <- Project configuration file with package metadata for 
+│                         lsm_hand_tracker and configuration for tools like black
+│
+├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+│
+├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+│   └── figures        <- Generated graphics and figures to be used in reporting
+│
+├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
+│                         generated with `pip freeze > requirements.txt`
+│
+├── setup.cfg          <- Configuration file for flake8
+│
+└── lsm_hand_tracker   <- Source code for use in this project.
+    │
+    ├── __init__.py             <- Makes lsm_hand_tracker a Python module
+    │
+    ├── config.py               <- Store useful variables and configuration
+    │
+    ├── dataset.py              <- Scripts to download or generate data
+    │
+    ├── features.py             <- Code to create features for modeling
+    │
+    ├── modeling                
+    │   ├── __init__.py 
+    │   ├── predict.py          <- Code to run model inference with trained models          
+    │   └── train.py            <- Code to train models
+    │
+    └── plots.py                <- Code to create visualizations
 ```
 
----
+--------
 
 ## Getting Started
 
