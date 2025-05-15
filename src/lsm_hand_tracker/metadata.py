@@ -139,7 +139,7 @@ def generate_metadata(
                 ]
 
             # --- Compute engineered features per hand ---
-            engineered = {"left": None, "right": None}
+            engineered = {"left": {}, "right": {}}
 
             # fingertip and joint indices as per MediaPipe
             fingertip_idxs = {"thumb": 4, "index": 8, "middle": 12, "ring": 16, "pinky": 20}
