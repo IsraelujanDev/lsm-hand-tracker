@@ -1,4 +1,3 @@
-import os
 import cv2
 import json
 import shutil
@@ -79,7 +78,7 @@ results = []
 
 print("\nProcessing Images...")
 
-with HandLandmarker.create_from_options(options) as landmarker:
+with landmarker:
     for i, (letter, img_path) in enumerate(image_records, start=1):
         print(f"Processing {i}/{len(image_records)}: {img_path.name} ({letter})", end="\r")
         bgr = cv2.imread(str(img_path))
