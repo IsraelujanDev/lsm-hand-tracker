@@ -1,5 +1,3 @@
-# src/lsm_hand_tracker/__init__.py
-
 """
 lsm_hand_tracker
 ===============
