@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import joblib
 from typing import Optional
 
-from lsm_hand_tracker.path_config import METADATA_DIR, MODELS_DIR
+from .path_config import METADATA_DIR, MODELS_DIR
 
 def load_balanced_data(path: Path = METADATA_DIR / 'gestures_balanced.csv') -> pd.DataFrame:
     """
