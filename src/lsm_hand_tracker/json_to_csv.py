@@ -6,8 +6,8 @@ from pathlib import Path
 from .path_config import METADATA_DIR
 
 def flatten_metadata_to_csv(
-        metadata_json_path: Path = METADATA_DIR / "gestures.json",
-        flattened_csv_path: Path = METADATA_DIR / "gestures_flat.csv"
+        metadata_json: Path = METADATA_DIR / "gestures.json",
+        flattened_csv: Path = METADATA_DIR / "gestures_flat.csv"
 ):
     """
     Load the JSON metadata file and flatten it into a CSV format.
@@ -15,7 +15,7 @@ def flatten_metadata_to_csv(
     each feature, including engineered features.
     """
 
-    with open(metadata_json_path, "r", encoding="utf-8") as f:
+    with open(metadata_json, "r", encoding="utf-8") as f:
         records = json.load(f)
 
     # Build a flat list of dicts
@@ -46,7 +46,7 @@ def flatten_metadata_to_csv(
 
         # Flatten engineered distances and angles
         for side, feats in rec["engineered"].items():
-            if feats is None:
+            if not feats:
                 # fill NaNs for missing hand
                 for finger in ("thumb","index","middle","ring","pinky"):
                     row[f"{side}_{finger}_dist"]  = float("nan")
@@ -54,19 +54,19 @@ def flatten_metadata_to_csv(
                 continue
 
             # Distances Data
-            for dist_name, dist_val in feats["distances"].items():
+            for dist_name, dist_val in feats.get("distances", {}).items():
                 row[f"{side}_{dist_name}"] = dist_val
             
             # Angles Data
-            for ang_name, ang_val in feats["angles"].items():
+            for ang_name, ang_val in feats.get("angles", {}).items():
                 row[f"{side}_{ang_name}"] = ang_val
 
         flat_rows.append(row)
 
-    # 4) Create DataFrame and write CSV
+    # Create DataFrame and write CSV
     df = pd.DataFrame(flat_rows)
-    df.to_csv(flattened_csv_path, index=False)
-    print(f"Wrote flat CSV with {len(df)} rows to {flattened_csv_path}")
+    df.to_csv(flattened_csv, index=False)
+    print(f"Wrote flat CSV with {len(df)} rows to {flattened_csv}")
 
 def main():
     flatten_metadata_to_csv()
