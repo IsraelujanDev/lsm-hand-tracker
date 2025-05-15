@@ -75,21 +75,21 @@ def finalize_clean_df(df: pd.DataFrame) -> pd.DataFrame:
     return df.drop(columns=["confidence", "hand_count"])
 
 def clean_dataset(
-    input_csv_path: Path = METADATA_DIR / "gestures_flat.csv",
-    output_csv_path: Path = METADATA_DIR / "gestures_clean.csv",
+    input_csv: Path = METADATA_DIR / "gestures_flat.csv",
+    output_csv: Path = METADATA_DIR / "gestures_clean.csv",
 ) -> pd.DataFrame:
     """
     Run the full cleaning pipeline: drop unused columns, choose preferred hand,
     extract features, finalize, then save the cleaned CSV.
     """
-    df = pd.read_csv(input_csv_path)
+    df = pd.read_csv(input_csv)
     df = drop_unused_columns(df)
     df = mark_preferred_hand(df)
     df_feat = extract_features(df)
     clean_df = finalize_clean_df(df_feat)
 
-    clean_df.to_csv(output_csv_path, index=False)
-    print(f"Wrote cleaned data with {len(clean_df)} rows to {output_csv_path}")
+    clean_df.to_csv(output_csv, index=False)
+    print(f"Wrote cleaned data with {len(clean_df)} rows to {output_csv}")
     return clean_df
 
 def main():
