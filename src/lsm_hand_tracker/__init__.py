@@ -10,13 +10,16 @@ and gesture inference of Mexican Sign Language.
 
 __version__ = "0.1.0"
 
-# Core pipeline
-from .metadata import generate_metadata
-
 # Configuration utilities and directory constants
 from . import path_config
 
+# Core pipeline
+from .metadata import generate_metadata
+from .json_to_csv import flatten_metadata_to_csv
+
+
 __all__ = [
-    "generate_metadata",
     "path_config",
+    "generate_metadata",
+    "flatten_metadata_to_csv",
 ]
