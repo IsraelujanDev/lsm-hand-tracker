@@ -8,7 +8,7 @@ from pathlib import Path
 import mediapipe as mp
 
 # Custom scripts
-from .path_config import RAW_DIR, IMAGES_DIR, VIDEOS_DIR, NOT_DETECTED_DIR, METADATA_DIR, MODEL_PATH
+from .path_config import RAW_DIR, IMAGES_DIR, VIDEOS_DIR, NOT_DETECTED_DIR, METADATA_DIR, MEDIAPIPE_MODEL
 
 def generate_metadata(
     raw_dir       = RAW_DIR,
@@ -16,7 +16,7 @@ def generate_metadata(
     videos_dir    = VIDEOS_DIR,
     not_det_dir   = NOT_DETECTED_DIR,
     metadata_dir  = METADATA_DIR,
-    model_path    = MODEL_PATH):
+    model_path    = MEDIAPIPE_MODEL):
     """
     Generate metadata for hand gesture recognition using MediaPipe.
     This script processes images from a raw directory, extracts hand landmarks,
