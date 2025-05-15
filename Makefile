@@ -17,8 +17,6 @@ requirements:
 	uv sync
 	
 
-
-
 ## Delete all compiled Python files
 .PHONY: clean
 clean:
@@ -39,7 +37,6 @@ format:
 	ruff format
 
 
-
 ## Run tests
 .PHONY: test
 test:
@@ -57,7 +54,6 @@ sync_data_up:
 	
 
 
-
 ## Set up Python interpreter environment
 .PHONY: create_environment
 create_environment:
@@ -68,6 +64,17 @@ create_environment:
 
 
 
+## Scripts and process of LSM project
+.PHONY: metadata preprocess pipeline
+
+metadata:
+	uv run scripts/generate_metadata.py
+
+preprocess:
+	uv run scripts/preprocess_csv.py
+
+pipeline:
+	uv run scripts/run_pipeline.py
 
 #################################################################################
 # PROJECT RULES                                                                 #
