@@ -3,6 +3,7 @@ from .json_to_csv import flatten_metadata_to_csv
 from .cleaning import clean_dataset
 from .features import transform_and_balance_dataset
 from .training import train_model
+from .prediction import predict
 
 
 def run_pipeline():
@@ -19,6 +20,7 @@ def run_pipeline():
     generate_metadata()
 
     print("2) Flattening metadata to CSV…")
+    
     flatten_metadata_to_csv()
 
     print("3) Cleaning the dataset…")
@@ -30,8 +32,8 @@ def run_pipeline():
     print("5) Training the model…")
     train_model()
     
-    # print("6) Running inference…")
-    # predict()
+    print("6) Running inference…")
+    predict()
 
     print("✅ Pipeline complete!")
 
