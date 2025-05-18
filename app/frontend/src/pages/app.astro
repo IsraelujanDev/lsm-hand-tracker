@@ -30,3 +30,40 @@ import ControlPanel from '../components/ControlPanel.astro';
     }
 
 </style>
+
+<script>
+	const video = document.getElementById('webcam') as HTMLVideoElement;
+    const button = document.getElementById('startCapturing') as HTMLButtonElement;
+
+	// Creating a canvas element to draw the video frame
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+    button.addEventListener('click', () => {
+		const selected = document.querySelector('input[name="letter"]:checked') as HTMLInputElement;
+		if (!selected) {
+			alert('Please select a letter');
+			return;
+		}
+		const letter = selected.value;
+
+        canvas.width  = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+
+		// Convert to blob and download
+        canvas.toBlob((blob) => {
+            if (!blob) return;
+			const extension = blob.type.split('/')[1] || 'png';
+			const id = crypto.randomUUID().split('-')[0];
+			const filename = `${letter}_${id}.${extension}`;
+			
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }, 'image/png');
+    });
+</script>
