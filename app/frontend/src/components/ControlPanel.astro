@@ -1,29 +1,34 @@
 ---
 import Button from "./Button.astro"
 import CameraUp from "../assets/camera-up.astro"
-import HandClick from "../assets/hand-click.astro"
 import PhotoUp from "../assets/photo-up.astro"
+
+import CameraOptions from '../components/CameraOptions.astro';
 ---
 
-
 <div class="control-panel">
-    <Button buttonID='selectGesture' label='Select Gesture'>
-        <HandClick/>
-    </Button>
-    <Button buttonID='startCapturing' label='Start Capturing'>
-        <CameraUp/>
-    </Button>
-    <Button buttonID='loadImages' label='Load Images'>
-        <PhotoUp/>
-    </Button>
+    <div class="control-panel-main">
+        <h2>Control Panel</h2>
+        <p>Select a gesture:</p>
+        <CameraOptions/>
+    </div>
+    <div class="button-group">
+        <Button buttonID='startCapturing' label='Start Capturing'>
+            <CameraUp/>
+        </Button>
+        <Button buttonID='loadImages' label='Load Images'>
+            <PhotoUp/>
+        </Button>
+    </div>
 </div>
 
 <style>
     .control-panel {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: center;
         gap: 10px;
+        padding: 20px;
 
         background-color: var(--color-bg-normal);
 
@@ -31,9 +36,24 @@ import PhotoUp from "../assets/photo-up.astro"
         border-radius: 8px;
     }
 
-    @media (max-width:760px) {
+    @media (max-width: 960px) {
         .control-panel {
-            flex-direction: column;
+            width: 100%;
         }
+    }
+
+    .control-panel-main {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        width: 100%;;
     }
 </style>
