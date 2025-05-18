@@ -4,7 +4,6 @@ import Webcam from '../components/Webcam.astro';
 import ControlPanel from '../components/ControlPanel.astro';
 ---
 <Layout>
-	<h1>LSM APP</h1>
 	<div class="camera-and-options">
 		<Webcam/>
 		<ControlPanel/>
@@ -17,14 +16,17 @@ import ControlPanel from '../components/ControlPanel.astro';
 	.camera-and-options {
 		display: flex;
 		flex-direction: row;
+		justify-content:space-between;
 		overflow: hidden;
+
+		width: 100%;
+		gap: 1rem;
 	}
 
-	@media (max-width:760px) {
+	@media (max-width:960px) {
         .camera-and-options {
             flex-direction: column;
         }
     }
-
 
 </style>
