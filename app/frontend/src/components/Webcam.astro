@@ -10,12 +10,12 @@
 
       async function enableWebcam() {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          video.srcObject = stream;
-          video.src
+			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+			video.srcObject = stream;
+			video.src
         } catch (err) {
-          console.error('Error accessing webcam:', err);
-          alert('Could not access the webcam. Please allow camera permissions.');
+			console.error('Error accessing webcam:', err);
+			alert('Could not access the webcam. Please allow camera permissions.');
         }
       }
 
@@ -24,10 +24,11 @@
 
 <style>
     .video-container {
-        width: 800px;
-        height: 500px;
+        height: 600px;
         background: black;
         overflow: hidden;
+        border-radius: 8px;
+        border: 4px var(--color-bg-lighter) solid;
     }
     .camera {
         width: 100%;
