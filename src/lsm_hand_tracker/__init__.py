@@ -12,7 +12,7 @@ __version__ = "0.1.0"
 from . import path_config
 
 # Core pipeline
-from .metadata import generate_metadata
+from .data_extraction import generate_metadata
 from .json_to_csv import flatten_metadata_to_csv
 
 
