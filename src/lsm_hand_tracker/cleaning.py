@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from .path_config import METADATA_DIR
+from .path_config import INTERIM_DIR
 
 def drop_unused_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -75,8 +75,8 @@ def finalize_clean_df(df: pd.DataFrame) -> pd.DataFrame:
     return df.drop(columns=["confidence", "hand_count"])
 
 def clean_dataset(
-    input_csv: Path = METADATA_DIR / "gestures_flat.csv",
-    output_csv: Path = METADATA_DIR / "gestures_clean.csv",
+    input_csv: Path = INTERIM_DIR / "gestures_flat.csv",
+    output_csv: Path = INTERIM_DIR / "gestures_clean.csv",
 ) -> pd.DataFrame:
     """
     Run the full cleaning pipeline: drop unused columns, choose preferred hand,
