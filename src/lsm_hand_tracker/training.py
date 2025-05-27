@@ -78,10 +78,6 @@ def train_model(
     """
     Train a RandomForest classifier, evaluate it, save metrics and model.
     """
-    # Ensure output dirs
-    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    MODELS_DIR.mkdir(parents=True, exist_ok=True)
-
     # Load data
     df = data if data is not None else load_balanced_data()
     X = df.drop(columns=['label'])
