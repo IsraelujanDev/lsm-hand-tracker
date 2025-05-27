@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 from typing import List, Optional, Set, Callable, Any
 
