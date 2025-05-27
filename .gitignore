@@ -1,11 +1,7 @@
 .env
 .venv
 
-data/processed/images/*
-data/processed/videos/*
-data/processed/not_detected/*
-data/metadata/OLD
-data/raw/*
+data/
 
 __pycache__
 
