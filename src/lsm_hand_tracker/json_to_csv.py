@@ -3,11 +3,11 @@ import pandas as pd
 from pathlib import Path
 
 # custom scripts
-from .path_config import METADATA_DIR
+from .path_config import INTERIM_DIR
 
 def flatten_metadata_to_csv(
-        metadata_json: Path = METADATA_DIR / "gestures.json",
-        flattened_csv: Path = METADATA_DIR / "gestures_flat.csv"
+        metadata_json: Path = INTERIM_DIR / "gestures.json",
+        flattened_csv: Path = INTERIM_DIR / "gestures_flat.csv"
 ):
     """
     Load the JSON metadata file and flatten it into a CSV format.
