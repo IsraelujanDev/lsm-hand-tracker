@@ -20,30 +20,25 @@ def _get_base_path() -> Path:
 BASE_PATH = _get_base_path()
 
 # 3) Define all directories
-RAW_DIR           = BASE_PATH / "data" / "raw"
-PROCESSED_DIR     = BASE_PATH / "data" / "processed"
-IMAGES_DIR        = PROCESSED_DIR / "images"
-VIDEOS_DIR        = PROCESSED_DIR / "videos"
-NOT_DETECTED_DIR  = PROCESSED_DIR / "not_detected"
-METADATA_DIR      = PROCESSED_DIR / "metadata"
-MODELS_DIR        = BASE_PATH / "models"
-MEDIAPIPE_MODEL   = MODELS_DIR / "hand_landmarker.task"
-REPORTS_DIR       = BASE_PATH / "reports"
-FIGURES_DIR       = REPORTS_DIR / "figures"
+EXTERNAL_DIR    = BASE_PATH / "data" / "external"
+INTERIM_DIR     = BASE_PATH / "data" / "interim"
+PROCESSED_DIR   = BASE_PATH / "data" / "processed"
+RAW_DIR         = BASE_PATH / "data" / "raw"
+MODELS_DIR      = BASE_PATH / "models"
+REPORTS_DIR     = BASE_PATH / "reports"
+FIGURES_DIR     = REPORTS_DIR / "figures"
 
 # 4) Ensure they exist
-for d in (RAW_DIR, IMAGES_DIR, VIDEOS_DIR, NOT_DETECTED_DIR, METADATA_DIR, MODELS_DIR, REPORTS_DIR, FIGURES_DIR):
+for d in (EXTERNAL_DIR, INTERIM_DIR, PROCESSED_DIR, RAW_DIR, MODELS_DIR, REPORTS_DIR, FIGURES_DIR):
     d.mkdir(parents=True, exist_ok=True)
 
 # 5) Registry for lookup
 _DIRS = {
     "base":         BASE_PATH,
-    "raw":          RAW_DIR,
+    "external":     EXTERNAL_DIR,
+    "interim":      INTERIM_DIR,
     "processed":    PROCESSED_DIR,
-    "images":       IMAGES_DIR,
-    "videos":       VIDEOS_DIR,
-    "not_detected": NOT_DETECTED_DIR,
-    "metadata":     METADATA_DIR,
+    "raw":          RAW_DIR,
     "models":       MODELS_DIR,
     "reports":      REPORTS_DIR,
     "figures":      FIGURES_DIR,
@@ -67,30 +62,27 @@ def set_base_path(path):
     global BASE_PATH, RAW_DIR, PROCESSED_DIR, IMAGES_DIR
     global VIDEOS_DIR, NOT_DETECTED_DIR, METADATA_DIR, MODELS_DIR, MEDIAPIPE_MODEL, _DIRS
 
-    BASE_PATH        = Path(path)
-    RAW_DIR          = BASE_PATH / "data" / "raw"
-    PROCESSED_DIR    = BASE_PATH / "data" / "processed"
-    IMAGES_DIR       = PROCESSED_DIR / "images"
-    VIDEOS_DIR       = PROCESSED_DIR / "videos"
-    NOT_DETECTED_DIR = PROCESSED_DIR / "not_detected"
-    METADATA_DIR     = PROCESSED_DIR / "metadata"
-    MODELS_DIR       = BASE_PATH / "models"
-    MEDIAPIPE_MODEL  = MODELS_DIR / "hand_landmarker.task"
+    BASE_PATH       = Path(path)
+    EXTERNAL_DIR    = BASE_PATH / "data" / "external"
+    INTERIM_DIR     = BASE_PATH / "data" / "interim"
+    PROCESSED_DIR   = BASE_PATH / "data" / "processed"
+    RAW_DIR         = BASE_PATH / "data" / "raw"
+    MODELS_DIR      = BASE_PATH / "models"
+    REPORTS_DIR     = BASE_PATH / "reports"
+    FIGURES_DIR     = REPORTS_DIR / "figures"
 
     # Recreate dirs
-    for d in (RAW_DIR, IMAGES_DIR, VIDEOS_DIR, NOT_DETECTED_DIR, METADATA_DIR, MODELS_DIR, REPORTS_DIR, FIGURES_DIR):
+    for d in (EXTERNAL_DIR, INTERIM_DIR, PROCESSED_DIR, RAW_DIR, MODELS_DIR, REPORTS_DIR, FIGURES_DIR):
         d.mkdir(parents=True, exist_ok=True)
 
     # Update registry
     _DIRS = {
-        "base":         BASE_PATH,
-        "raw":          RAW_DIR,
-        "processed":    PROCESSED_DIR,
-        "images":       IMAGES_DIR,
-        "videos":       VIDEOS_DIR,
-        "not_detected": NOT_DETECTED_DIR,
-        "metadata":     METADATA_DIR,
-        "models":       MODELS_DIR,
-        "reports":      REPORTS_DIR,
-        "figures":      FIGURES_DIR,
-    }
+    "base":         BASE_PATH,
+    "external":     EXTERNAL_DIR,
+    "interim":      INTERIM_DIR,
+    "processed":    PROCESSED_DIR,
+    "raw":          RAW_DIR,
+    "models":       MODELS_DIR,
+    "reports":      REPORTS_DIR,
+    "figures":      FIGURES_DIR,
+}
