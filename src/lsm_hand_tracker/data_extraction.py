@@ -7,7 +7,7 @@ from pathlib import Path
 import mediapipe as mp
 
 # Custom scripts
-from .path_config import RAW_DIR, INTERIM_DIR, MODELS_DIR
+from .path_config import RAW_DIR, INTERIM_DIR, MODELS_DIR, REPORTS_DIR
 
 def generate_metadata(
     raw_dir       = RAW_DIR,
@@ -198,8 +198,8 @@ def generate_metadata(
     output_path.write_text(json.dumps(results, ensure_ascii=False, indent=4), encoding="utf-8")
 
     # Write failure log
-    log_path = INTERIM_DIR / "failed_images_log.json"
-    log_path.write_text(json.dumps(failed_log, ensure_ascii=False, indent=2), encoding="utf-8")
+    log_path = REPORTS_DIR / "failed_images_log.json"
+    log_path.write_text(json.dumps(failed_log, ensure_ascii=False, indent=4), encoding="utf-8")
     print(f"Saved failure log to {log_path}")
 
 
