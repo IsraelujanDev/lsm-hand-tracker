@@ -4,9 +4,9 @@ import math
 import numpy as np
 import json
 from pathlib import Path
-from typing import Optional, List, Dict, Any, Tuple
+from typing import Optional, List, Dict, Any, Tuple, Set
 
-from lsm_hand_tracker.path_config import IMAGES_DIR, MEDIAPIPE_MODEL, METADATA_DIR
+from lsm_hand_tracker.path_config import IMAGES_DIR, METADATA_DIR, MEDIAPIPE_MODEL
 
 # ---------------------- Constants & MediaPipe Initialization ----------------------
 BaseOptions = mp.tasks.BaseOptions
@@ -63,23 +63,14 @@ def landmarks_extraction(
 
     handedness_list = [h[0].category_name.lower() for h in detection.handedness]
     hand_confidence: Dict[str, Optional[float]] = {
-        "left": next(
-            (h[0].score for h in detection.handedness if h[0].category_name.lower() == "left"),
-            None
-        ),
-        "right": next(
-            (h[0].score for h in detection.handedness if h[0].category_name.lower() == "right"),
-            None
-        )
+        "left": next((h[0].score for h in detection.handedness if h[0].category_name.lower() == "left"), None),
+        "right": next((h[0].score for h in detection.handedness if h[0].category_name.lower() == "right"), None),
     }
 
     landmarks_dict: Dict[str, List[Dict[str, float]]] = {"left": [], "right": []}
     for h, lm_list in zip(detection.handedness, detection.hand_landmarks):
         side = h[0].category_name.lower()
-        landmarks_dict[side] = [
-            {"x": lm.x, "y": lm.y, "z": lm.z}
-            for lm in lm_list
-        ]
+        landmarks_dict[side] = [{"x": lm.x, "y": lm.y, "z": lm.z} for lm in lm_list]
 
     return landmarks_dict, hand_count, handedness_list, hand_confidence, height, width
 
@@ -107,16 +98,12 @@ def engineered_features_calculation(
                 (tip["y"] - wrist["y"])**2 +
                 (tip["z"] - wrist["z"])**2
             )
+
         # Angles at each MCP joint
         angs: Dict[str, float] = {}
         for finger in MCP_IDXS:
-            mcp = np.array([lm[MCP_IDXS[finger]]["x"],
-                            lm[MCP_IDXS[finger]]["y"],
-                            lm[MCP_IDXS[finger]]["z"]])
-            pip = np.array([lm[PIP_IDXS[finger]]["x"],
-                            lm[PIP_IDXS[finger]]["y"],
-                            lm[PIP_IDXS[finger]]["z"]])
-            # Vector from MCP → PIP
+            mcp = np.array([lm[MCP_IDXS[finger]]["x"], lm[MCP_IDXS[finger]]["y"], lm[MCP_IDXS[finger]]["z"]])
+            pip = np.array([lm[PIP_IDXS[finger]]["x"],  lm[PIP_IDXS[finger]]["y"],  lm[PIP_IDXS[finger]]["z"]])
             v1 = pip - mcp
             # Vector from MCP → wrist
             v2 = np.array([wrist["x"], wrist["y"], wrist["z"]]) - mcp
@@ -161,51 +148,69 @@ def save_results_to_json(
     results: List[Dict[str, Any]],
     output_path: Path = METADATA_DIR / "gestures.json"
 ) -> None:
-    """Save the collected metadata to a JSON file."""
-    # Load existing data if present
+    """Save the collected metadata to a JSON file (appends to existing)."""
     existing: List[Dict[str, Any]] = []
     if output_path.exists():
         try:
-            with open(output_path, "r", encoding="utf-8") as f:
-                existing = json.load(f)
+            existing = json.loads(output_path.read_text(encoding="utf-8"))
             if not isinstance(existing, list):
                 existing = []
         except Exception:
             existing = []
-    # Combine and write back
+
     combined = existing + results
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(combined, f, indent=4)
+    output_path.write_text(json.dumps(combined, indent=4), encoding="utf-8")
     print(f"✅ Metadata saved to {output_path} (appended {len(results)} records)")
 
 
-def generate_metadata_from_images(incremental: bool = False) -> None:
+def generate_metadata_from_images(
+    incremental: bool = False
+) -> List[Dict[str, Any]]:
     """
-    Walk all images in IMAGES_DIR, extract metadata, and append to gestures.json.
-    If incremental=True, skip files whose metadata already exists.
+    Process all images in IMAGES_DIR and generate a metadata JSON.
+    If `incremental=True`, skip any file whose `file_name` is already present.
     Returns the list of newly-processed records.
     """
-    all_results: List[Dict[str, Any]] = []
-    images = sorted(IMAGES_DIR.glob("*.jpg"))
+    METADATA_DIR.mkdir(parents=True, exist_ok=True)
+    output_path = METADATA_DIR / "gestures.json"
 
+    # Load seen file names
+    seen_files: Set[str] = set()
+    if output_path.exists():
+        try:
+            existing = json.loads(output_path.read_text(encoding="utf-8"))
+            if isinstance(existing, list):
+                seen_files = {
+                    item["file_name"]
+                    for item in existing
+                    if isinstance(item, dict) and item.get("file_name") is not None
+                }
+        except Exception:
+            seen_files = set()
+
+    images = sorted(IMAGES_DIR.glob("*.jpg"))
     if not images:
         print(f"⚠️ No images found in {IMAGES_DIR}")
-        return
+        return []
 
+    new_results: List[Dict[str, Any]] = []
     for image_path in images:
-        print(f"Processing {image_path.name}...")
+        if incremental and image_path.name in seen_files:
+            continue
+        print(f"Processing {image_path.name}…")
         result = process_single_image(image_path)
         if result:
-            all_results.append(result)
+            new_results.append(result)
 
-    if all_results:
-        save_results_to_json(all_results)
+    if new_results:
+        save_results_to_json(new_results, output_path)
     else:
-        print("⚠️ No valid data processed.")
+        print("⚠️ No new data processed.")
+
+    return new_results
 
 
 def main() -> None:
-    """Entry point for script execution."""
     generate_metadata_from_images()
 
 
