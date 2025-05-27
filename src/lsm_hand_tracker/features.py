@@ -4,7 +4,7 @@ from sklearn.preprocessing import PowerTransformer, MinMaxScaler
 from sklearn.decomposition import PCA
 from imblearn.over_sampling import SMOTE
 
-from .path_config import METADATA_DIR
+from .path_config import INTERIM_DIR, PROCESSED_DIR
 
 def encode_handedness(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -61,8 +61,8 @@ def balance_dataset(df: pd.DataFrame, k: int) -> pd.DataFrame:
     return df_bal
 
 def transform_and_balance_dataset(
-    input_csv: Path = METADATA_DIR / 'gestures_clean.csv',
-    output_balanced: Path = METADATA_DIR / 'gestures_balanced.csv',
+    input_csv: Path = INTERIM_DIR / 'gestures_clean.csv',
+    output_balanced: Path = PROCESSED_DIR / 'gestures_balanced.csv',
     pca_variance: float = 0.95,
     smote_k: int = 2,
 ) -> pd.DataFrame:
