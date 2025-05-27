@@ -3,7 +3,6 @@ from .json_to_csv import flatten_metadata_to_csv
 from .cleaning import clean_dataset
 from .features import transform_and_balance_dataset
 from .training import train_model
-# from .prediction import predict
 
 
 def run_pipeline():
@@ -14,7 +13,6 @@ def run_pipeline():
       3) Clean the dataset (drop unused columns, select preferred hand, remove NaNs).
       4) Transform features and balance classes (PowerTransformer, PCA, SMOTE).
       5) (Optional) Train and evaluate the predictive model.
-      6) (Optional) Run inference.
     """
     print("1) Generating metadata…")
     generate_metadata()
@@ -31,9 +29,6 @@ def run_pipeline():
 
     print("5) Training the model…")
     train_model()
-    
-    # print("6) Running inference…")
-    # predict()
 
     print("✅ Pipeline complete!")
 
