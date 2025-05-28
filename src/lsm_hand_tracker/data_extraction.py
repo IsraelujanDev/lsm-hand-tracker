@@ -198,9 +198,10 @@ def generate_metadata(
     output_path.write_text(json.dumps(results, ensure_ascii=False, indent=4), encoding="utf-8")
 
     # Write failure log
-    log_path = REPORTS_DIR / "failed_images_log.json"
-    log_path.write_text(json.dumps(failed_log, ensure_ascii=False, indent=4), encoding="utf-8")
+    log_path = REPORTS_DIR / "failed_images_log.txt"
+    log_path.write_text("\n".join(failed_log), encoding="utf-8")
     print(f"Saved failure log to {log_path}")
+
 
 
 def main():
