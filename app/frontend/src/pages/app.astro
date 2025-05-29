@@ -32,9 +32,10 @@ import ControlPanel from '../components/ControlPanel.astro';
 </style>
 
 <script>
-	import { enableVideoProcessing, captureSnapshot } from '../scripts/video-processing.js';
+	import { enableVideoProcessing, captureSnapshot, enablePreviewToggle } from '../scripts/video-processing.js';
 
 	enableVideoProcessing('webcam', 'overlay');
+	enablePreviewToggle('togglePreviewBtn');	
 	captureSnapshot('startCapturing');
 </script>
 
