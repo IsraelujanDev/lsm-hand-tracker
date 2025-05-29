@@ -2,6 +2,7 @@
 import Button from "./Button.astro"
 import CameraUp from "../assets/camera-up.astro"
 import PhotoUp from "../assets/photo-up.astro"
+import HandClick from "../assets/hand-click.astro";
 
 import CameraOptions from '../components/CameraOptions.astro';
 ---
@@ -15,6 +16,9 @@ import CameraOptions from '../components/CameraOptions.astro';
     <div class="button-group">
         <Button buttonID='startCapturing' label='Start Capturing'>
             <CameraUp/>
+        </Button>
+        <Button buttonID='togglePreviewBtn' label='Landmarks Preview'>
+            <HandClick/>
         </Button>
         <Button buttonID='loadImages' label='Load Images'>
             <PhotoUp/>
