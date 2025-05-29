@@ -9,14 +9,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "fastapi>=0.115.12",
     "imbalanced-learn>=0.13.0",
     "matplotlib>=3.10.1",
     "mediapipe>=0.10.21",
     "opencv-python>=4.11.0.86",
     "pandas>=2.2.3",
+    "pydantic>=2.11.5",
     "pytest>=8.3.5",
     "scikit-learn>=1.6.1",
     "seaborn>=0.13.2",
+    "uvicorn>=0.34.2",
 ]
 
 [tool.setuptools.packages.find]
