@@ -52,13 +52,15 @@ const enableVideoProcessing = async (
     overlay.width = offscreen.width = video.videoWidth;
     overlay.height = offscreen.height = video.videoHeight;
 
+
+
     // Initialize MediaPipe HandLandmarker in VIDEO mode
     const vision = await FilesetResolver.forVisionTasks(
-        '/mediapipe/wasm'
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
     );
     landmarker = await HandLandmarker.createFromOptions(vision, {
         baseOptions: {
-            modelAssetPath: '/models/hand_landmarker.task',
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
             delegate: 'GPU'
         },
         runningMode: 'VIDEO',
