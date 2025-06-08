@@ -2,7 +2,7 @@
 .venv
 
 data/
-models/
+/models/
 reports/
 __pycache__
 
