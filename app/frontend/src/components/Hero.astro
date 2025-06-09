@@ -27,7 +27,10 @@
     .main-image {
         padding: 0 2rem;
         max-width: 400px;
+
         height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
     }
 
     @media (max-width: 760px) {
@@ -36,7 +39,7 @@
         }
 
         .main-image {
-            max-width: 50%;
+            display: none;
         }
     }
 
@@ -88,6 +91,13 @@
         font-size: 0.95rem;
     }
 
+    .subheading {
+        text-wrap: balance;
+    }
+
+    .body-text {
+        text-wrap: balance;
+    }
 
 
 </style>

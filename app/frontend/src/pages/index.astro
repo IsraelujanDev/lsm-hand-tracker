@@ -1,11 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import ImageCarousel from '../components/ImageCarousel.astro';
+
+const images = [
+	'/images/photo1.jpg',
+	'/images/photo2.jpg',
+	'/images/photo3.jpg',
+];
 ---
 
 <Layout>
 
 	<Hero/>
+
+	<ImageCarousel images={images} />
 
 </Layout>
 
@@ -17,7 +26,3 @@ import Hero from '../components/Hero.astro';
 		margin-bottom: 20px;
 	}
 </style>
-
-<script>
-	import '../scripts/image-processing.js';
-</script>
