@@ -146,44 +146,48 @@ const processFrame = (timestamp) => {
 };
 
 /**
- * Capture a high-quality snapshot and save JSON
+ * Capture a snapshot of the current video frame and send it to the server
  */
 const captureSnapshot = (buttonId = 'captureBtn') => {
-    document
-        .getElementById(buttonId)
-        .addEventListener('click', () => {
-            const id = crypto.randomUUID();
-            // Raw frame -> PNG
-            const offCtx = offscreen.getContext('2d');
-            offCtx.drawImage(video, 0, 0);
-            offscreen.toBlob(
-                (blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `frame_${id}.png`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                },
-                'image/png'
-            );
-            // Landmarks -> JSON
-            const payload = {
-                id,
-                timestamp: Date.now(),
-                landmarks: latestLandmarks
-            };
-            const jb = new Blob(
-                [JSON.stringify(payload, null, 2)],
-                { type: 'application/json' }
-            );
-            const jurl = URL.createObjectURL(jb);
-            const ja = document.createElement('a');
-            ja.href = jurl;
-            ja.download = `landmarks_${id}.json`;
-            ja.click();
-            URL.revokeObjectURL(jurl);
-        });
+    document.getElementById(buttonId).addEventListener('click', async () => {
+        // Get the selected letter from radio buttons
+        const selected = document.querySelector('input[name="letter"]:checked');
+        if (!selected) {
+            return alert('Please select a letter before capturing.');
+        }
+        const letter = selected.value;
+
+        // Capture the frame in the hidden canvas
+        const offCtx = offscreen.getContext('2d');
+        offCtx.drawImage(video, 0, 0);
+
+        // Convert the canvas to a blob and send it
+        offscreen.toBlob(async (blob) => {
+            try {
+                const form = new FormData();
+                // 'image' matches File(...) in FastAPI
+                form.append('image', blob, `${letter}_${crypto.randomUUID()}.png`);
+                // 'label' matches Form(...) in FastAPI
+                form.append('label', letter);
+
+                const resp = await fetch('http://127.0.0.1:8000/process/', {
+                    method: 'POST',
+                    body: form
+                });
+                if (!resp.ok) {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+                const { success } = await resp.json();
+                console.log(success
+                    ? '✅ Image saved to /success'
+                    : '⚠️ Image saved to /revision'
+                );
+            }
+            catch (err) {
+                console.error('Error sending:', err);
+            }
+        }, 'image/png');
+    });
 };
 
 export {
