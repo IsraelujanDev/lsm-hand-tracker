@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from .path_config import INTERIM_DIR
+from lsm_hand_tracker import INTERIM_DIR
 
 def drop_unused_columns(df: pd.DataFrame) -> pd.DataFrame:
     """

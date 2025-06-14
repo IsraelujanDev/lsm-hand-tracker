@@ -8,16 +8,34 @@ and gesture inference of Mexican Sign Language.
 
 __version__ = "0.1.0"
 
-# Configuration utilities and directory constants
-from . import path_config
-
-# Core pipeline
-from .data_extraction import generate_metadata
-from .json_to_csv import flatten_metadata_to_csv
+# Directory constants and utils
+from .utils.path_config import (
+    BASE_PATH,
+    EXTERNAL_DIR,
+    INTERIM_DIR,
+    PROCESSED_DIR,
+    RAW_DIR,
+    MODELS_DIR,
+    REPORTS_DIR,
+    FIGURES_DIR,
+    get_dir,
+    set_base_path,
+)
 
 
 __all__ = [
-    "path_config",
-    "generate_metadata",
-    "flatten_metadata_to_csv",
+    # version
+    "__version__",
+    # path constants
+    "BASE_PATH",
+    "EXTERNAL_DIR",
+    "INTERIM_DIR",
+    "PROCESSED_DIR",
+    "RAW_DIR",
+    "MODELS_DIR",
+    "REPORTS_DIR",
+    "FIGURES_DIR",
+    # path utilities
+    "get_dir",
+    "set_base_path",
 ]

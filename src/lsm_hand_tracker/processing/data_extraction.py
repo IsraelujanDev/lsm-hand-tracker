@@ -3,18 +3,18 @@ import json
 import uuid
 import numpy as np
 import math
-from pathlib import Path
 import mediapipe as mp
 
 # Custom scripts
-from .path_config import RAW_DIR, INTERIM_DIR, MODELS_DIR, REPORTS_DIR
+from lsm_hand_tracker.utils.path_config  import RAW_DIR, INTERIM_DIR, MODELS_DIR, REPORTS_DIR
+from lsm_hand_tracker.processing.image_loader import gather_image_records
 
 def generate_metadata(
-    raw_dir       = RAW_DIR,
+    image_records,
     model_path    = MODELS_DIR / "hand_landmarker.task"):
     """
     Generate metadata for hand gesture recognition using MediaPipe.
-    This script processes images from a raw directory, extracts hand landmarks,
+    This script extracts hand landmarks, generates engineered features,
     and saves the results in JSON format.
     """
 
@@ -43,27 +43,9 @@ def generate_metadata(
     # Create the landmarker using a context manager for proper cleanup
     landmarker = HandLandmarker.create_from_options(options)
 
-    # ---------------------- Gather Records ----------------------
-
-    exts_img   = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
-
-    def gather_image_records(raw_dir: Path):
-        if not raw_dir.exists():
-            raise FileNotFoundError(f"Raw data directory not found: {raw_dir}")
-        records = []
-        for letter_dir in sorted(raw_dir.iterdir()):
-            if not letter_dir.is_dir():
-                continue
-            letter = letter_dir.name
-            for img_path in sorted(letter_dir.iterdir()):
-                if img_path.suffix.lower() in exts_img:
-                    records.append((letter, img_path))
-        return records
-
-    image_records = gather_image_records(raw_dir)
-    print(f"Total images found: {len(image_records)}")
-
     # ---------------------- Landmark Extraction ----------------------
+
+    print(f"Total images to process: {len(image_records)}")
 
     # DYNAMIC_LETTERS = {"J", "K", "Ñ", "Q", "X", "Z"}
     failed_count = 0
@@ -205,7 +187,8 @@ def generate_metadata(
 
 
 def main():
-    generate_metadata()
+    image_records = gather_image_records(RAW_DIR)
+    generate_metadata(image_records)
 
 if __name__ == "__main__":
     main()

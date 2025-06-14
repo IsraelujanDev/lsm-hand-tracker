@@ -4,7 +4,7 @@ from sklearn.preprocessing import PowerTransformer, MinMaxScaler
 from sklearn.decomposition import PCA
 from imblearn.over_sampling import SMOTE
 
-from .path_config import INTERIM_DIR, PROCESSED_DIR
+from lsm_hand_tracker import INTERIM_DIR, PROCESSED_DIR
 
 def encode_handedness(df: pd.DataFrame) -> pd.DataFrame:
     """

@@ -1,8 +1,8 @@
-from .data_extraction import generate_metadata
-from .json_to_csv import flatten_metadata_to_csv
-from .cleaning import clean_dataset
-from .features import transform_and_balance_dataset
-from .training import train_model
+from lsm_hand_tracker.processing.data_extraction import generate_metadata
+from lsm_hand_tracker.processing.flatten import flatten_metadata_to_csv
+from lsm_hand_tracker.processing.cleaning import clean_dataset
+from lsm_hand_tracker.processing.features import transform_and_balance_dataset
+from lsm_hand_tracker.training import train_model
 
 
 def run_pipeline():

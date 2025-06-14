@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 # custom scripts
-from .path_config import INTERIM_DIR
+from lsm_hand_tracker import INTERIM_DIR
 
 def flatten_metadata_to_csv(
         metadata_json: Path = INTERIM_DIR / "gestures.json",
