@@ -31,4 +31,7 @@ ENV LSM_BASE=/app
 EXPOSE 8000
 
 # Start with uv run, which automatically activates the environment
-CMD ["uv", "run", "uvicorn", "lsm_hand_tracker.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# shell form so $PORT is substituted at runtime
+CMD uv run uvicorn lsm_hand_tracker.main:app \
+    --host 0.0.0.0 \
+    --port ${PORT:-8000}
