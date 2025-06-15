@@ -66,9 +66,9 @@ def extract_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def removing_extra_features(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Remove samples with two hands and drop temporary columns.
+    Drop columns that are not useful for training the model.
+    This includes 'confidence' and 'hand_count' as they don't provide enough variance
     """
-    df = df[df["hand_count"] != 2].reset_index(drop=True)
     
     # Droping confidence because our dataset doesn't contain so much variance in this column but in the future is possible to recover it
     # 'hand_count' has a similar case, where our model is just trained with one hand, if we solve this issue in the future we can include it again
