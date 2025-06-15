@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 # Directory of workspace
 WORKDIR /app
@@ -8,6 +8,7 @@ RUN pip install --no-cache-dir uv
 
 # Copy the configuration for dependency to cache the layer
 COPY pyproject.toml uv.lock ./
+COPY src ./src
 
 # Sync and install dependencies + the package (editable)
 RUN uv sync --locked --no-dev --no-editable
