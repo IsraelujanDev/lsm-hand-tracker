@@ -65,7 +65,6 @@ def process_one_image(
     detection = landmarker.detect(mp_image)
 
     if not detection.hand_landmarks:
-        print(f"No hands detected in image for letter '{letter}'")
         return None
 
     # --- Build metadata & landmark dicts ---
