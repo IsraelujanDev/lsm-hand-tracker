@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from lsm_hand_tracker import INTERIM_DIR
-
 def drop_unused_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     Drop columns with no predictive value based on EDA.
@@ -12,8 +10,10 @@ def drop_unused_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 def mark_preferred_hand(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Fill missing confidence values and add preferred_hand column.
+    Fill missing confidence values, then add a column indicating
+    which hand (left/right) has higher confidence.
     """
+    df = df.copy()
     df["confidence_left"] = df["confidence_left"].fillna(0)
     df["confidence_right"] = df["confidence_right"].fillna(0)
     df["preferred_hand"] = np.where(
@@ -64,7 +64,7 @@ def extract_features(df: pd.DataFrame) -> pd.DataFrame:
 
     return clean_df
 
-def finalize_clean_df(df: pd.DataFrame) -> pd.DataFrame:
+def removing_extra_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Remove samples with two hands and drop temporary columns.
     """
@@ -74,26 +74,49 @@ def finalize_clean_df(df: pd.DataFrame) -> pd.DataFrame:
     # 'hand_count' has a similar case, where our model is just trained with one hand, if we solve this issue in the future we can include it again
     return df.drop(columns=["confidence", "hand_count"])
 
-def clean_dataset(
-    input_csv: Path = INTERIM_DIR / "gestures_flat.csv",
-    output_csv: Path = INTERIM_DIR / "gestures_clean.csv",
-) -> pd.DataFrame:
+def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Run the full cleaning pipeline: drop unused columns, choose preferred hand,
-    extract features, finalize, then save the cleaned CSV.
+    Clean the dataset by filling missing values, extracting features to work just with one hand,
+    and removing unnecessary columns.
     """
-    df = pd.read_csv(input_csv)
+    df = df.copy()
     df = drop_unused_columns(df)
     df = mark_preferred_hand(df)
-    df_feat = extract_features(df)
-    clean_df = finalize_clean_df(df_feat)
+    df = extract_features(df)
+    df = removing_extra_features(df)
+    return df
 
-    clean_df.to_csv(output_csv, index=False)
-    print(f"Wrote cleaned data with {len(clean_df)} rows to {output_csv}")
-    return clean_df
+def load_dataset(
+    input_path: Path
+) -> pd.DataFrame:
+    """
+    Load a CSV from disk into a DataFrame.
+    """
+    return pd.read_csv(input_path)
+
+
+def save_dataset(
+    df: pd.DataFrame,
+    output_path: Path
+) -> None:
+    """
+    Save a DataFrame to CSV on disk.
+    """
+    df.to_csv(output_path, index=False)
+    print(f"Wrote cleaned data with {len(df)} rows to {output_path}")
+
+def clean_local_dataset():
+    from lsm_hand_tracker import INTERIM_DIR
+    input_path = INTERIM_DIR / "gestures_flat.csv"
+    output_path = INTERIM_DIR / "gestures_cleaned.csv"
+
+    df = load_dataset(input_path)
+    df = clean_dataset(df)
+    save_dataset(df, output_path)
 
 def main():
-    clean_dataset()
+    clean_local_dataset()
+    
 
 if __name__ == "__main__":
     main()
