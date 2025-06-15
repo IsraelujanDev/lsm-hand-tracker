@@ -173,7 +173,9 @@ def generate_metadata_from_files(
 
     with landmarker:
         print(f"Total images to process: {len(image_records)}")
-        for letter, img_path in image_records:
+        for i, (letter, img_path) in enumerate(image_records, start=1):
+            print(f"Processing {i}/{len(image_records)}: {img_path.name} ({letter})", end="\r")
+            
             bgr = cv2.imread(str(img_path))
             rec = process_one_image(letter, bgr, landmarker)
             if rec:
