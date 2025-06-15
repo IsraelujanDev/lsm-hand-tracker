@@ -1,0 +1,10 @@
+.venv
+app/
+docs/
+data/
+notebooks/
+references/
+reports/
+tests/
+.git
+.env
