@@ -168,7 +168,8 @@ const captureSnapshot = (buttonId = 'captureBtn') => {
                 form.append('image', blob, `${letter}_${crypto.randomUUID().split('-')[0]}.png`);
                 form.append('label', letter);
 
-                const resp = await fetch('http://127.0.0.1:8000/process/', {
+                const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/';
+                const resp = await fetch(`${API}/process/`, {
                     method: 'POST',
                     body: form
                 });
