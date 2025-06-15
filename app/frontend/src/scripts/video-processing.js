@@ -148,6 +148,10 @@ const processFrame = (timestamp) => {
 /**
  * Capture a snapshot of the current video frame and send it to the server
  */
+
+const RAW_API = import.meta.env.PUBLIC_API_URL || 'http://127.0.0.1:8000'
+const API_URL = RAW_API.replace(/\/$/, '')
+
 const captureSnapshot = (buttonId = 'captureBtn') => {
     document.getElementById(buttonId).addEventListener('click', async () => {
         // Get the selected letter from radio buttons
@@ -164,12 +168,11 @@ const captureSnapshot = (buttonId = 'captureBtn') => {
         // Convert the canvas to a blob and send it
         offscreen.toBlob(async (blob) => {
             try {
+                const endpoint = `${API_URL}/process/`
                 const form = new FormData();
                 form.append('image', blob, `${letter}_${crypto.randomUUID().split('-')[0]}.png`);
                 form.append('label', letter);
-
-                const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/';
-                const resp = await fetch(`${API}/process/`, {
+                const resp = await fetch(endpoint, {
                     method: 'POST',
                     body: form
                 });
