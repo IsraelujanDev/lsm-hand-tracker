@@ -1,7 +1,7 @@
 from lsm_hand_tracker.processing.data_extraction import data_extraction
 from lsm_hand_tracker.processing.flatten import flatten_local_images
 from lsm_hand_tracker.processing.cleaning import clean_local_dataset
-from lsm_hand_tracker.processing.features import transform_and_balance_dataset
+from lsm_hand_tracker.processing.transformations import prepare_training_dataset
 from lsm_hand_tracker.training import train_model
 
 
@@ -24,7 +24,7 @@ def run_pipeline():
     clean_local_dataset()
 
     print("4) Transforming and balancing features…")
-    transform_and_balance_dataset()
+    prepare_training_dataset()
 
     print("5) Training the model…")
     train_model()
