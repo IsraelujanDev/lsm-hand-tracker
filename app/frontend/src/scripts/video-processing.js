@@ -165,26 +165,32 @@ const captureSnapshot = (buttonId = 'captureBtn') => {
         offscreen.toBlob(async (blob) => {
             try {
                 const form = new FormData();
-                // 'image' matches File(...) in FastAPI
-                form.append('image', blob, `${letter}_${crypto.randomUUID()}.png`);
-                // 'label' matches Form(...) in FastAPI
+                form.append('image', blob, `${letter}_${crypto.randomUUID().split('-')[0]}.png`);
                 form.append('label', letter);
 
                 const resp = await fetch('http://127.0.0.1:8000/process/', {
                     method: 'POST',
                     body: form
                 });
+
+                // If the status is NOT 2xx, grab the JSON error payload
                 if (!resp.ok) {
-                    throw new Error(`HTTP ${resp.status}`);
+                    let errDetail = `HTTP ${resp.status}`;
+                    try {
+                        const payload = await resp.json();
+                        errDetail += `: ${payload.detail ?? JSON.stringify(payload)}`;
+                    } catch {
+                        const text = await resp.text();
+                        errDetail += `: ${text}`;
+                    }
+                    throw new Error(errDetail);
                 }
-                const { success } = await resp.json();
-                console.log(success
-                    ? '✅ Image saved to /success'
-                    : '⚠️ Image saved to /revision'
-                );
+
+                const record = await resp.json();
+                console.log('✅ Detected hands—metadata:', record);
             }
             catch (err) {
-                console.error('Error sending:', err);
+                console.error('Error sending:', err.message);
             }
         }, 'image/png');
     });
