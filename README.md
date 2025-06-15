@@ -91,6 +91,14 @@ The project is currently in the **experimental phase**, focusing on setting up t
      LSM_BASE=<path_to_project_directory>
      ```
 
+### Docker Deployment
+Build the backend API into a container and expose it on port 8000:
+```bash
+docker build -t lsm-hand-tracker .
+docker run -p 8000:8000 lsm-hand-tracker
+```
+The service will be available at `http://localhost:8000`.
+
 ---
 
 ## Usage

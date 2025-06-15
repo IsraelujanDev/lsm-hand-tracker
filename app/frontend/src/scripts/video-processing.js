@@ -146,44 +146,58 @@ const processFrame = (timestamp) => {
 };
 
 /**
- * Capture a high-quality snapshot and save JSON
+ * Capture a snapshot of the current video frame and send it to the server
  */
+
+const RAW_API = import.meta.env.PUBLIC_API_URL || 'http://127.0.0.1:8000'
+const API_URL = RAW_API.replace(/\/$/, '')
+
 const captureSnapshot = (buttonId = 'captureBtn') => {
-    document
-        .getElementById(buttonId)
-        .addEventListener('click', () => {
-            const id = crypto.randomUUID();
-            // Raw frame -> PNG
-            const offCtx = offscreen.getContext('2d');
-            offCtx.drawImage(video, 0, 0);
-            offscreen.toBlob(
-                (blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `frame_${id}.png`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                },
-                'image/png'
-            );
-            // Landmarks -> JSON
-            const payload = {
-                id,
-                timestamp: Date.now(),
-                landmarks: latestLandmarks
-            };
-            const jb = new Blob(
-                [JSON.stringify(payload, null, 2)],
-                { type: 'application/json' }
-            );
-            const jurl = URL.createObjectURL(jb);
-            const ja = document.createElement('a');
-            ja.href = jurl;
-            ja.download = `landmarks_${id}.json`;
-            ja.click();
-            URL.revokeObjectURL(jurl);
-        });
+    document.getElementById(buttonId).addEventListener('click', async () => {
+        // Get the selected letter from radio buttons
+        const selected = document.querySelector('input[name="letter"]:checked');
+        if (!selected) {
+            return alert('Please select a letter before capturing.');
+        }
+        const letter = selected.value;
+
+        // Capture the frame in the hidden canvas
+        const offCtx = offscreen.getContext('2d');
+        offCtx.drawImage(video, 0, 0);
+
+        // Convert the canvas to a blob and send it
+        offscreen.toBlob(async (blob) => {
+            try {
+                const endpoint = `${API_URL}/process/`
+                const form = new FormData();
+                form.append('image', blob, `${letter}_${crypto.randomUUID().split('-')[0]}.png`);
+                form.append('label', letter);
+                const resp = await fetch(endpoint, {
+                    method: 'POST',
+                    body: form
+                });
+
+                // If the status is NOT 2xx, grab the JSON error payload
+                if (!resp.ok) {
+                    let errDetail = `HTTP ${resp.status}`;
+                    try {
+                        const payload = await resp.json();
+                        errDetail += `: ${payload.detail ?? JSON.stringify(payload)}`;
+                    } catch {
+                        const text = await resp.text();
+                        errDetail += `: ${text}`;
+                    }
+                    throw new Error(errDetail);
+                }
+
+                const record = await resp.json();
+                console.log('✅ Detected hands—metadata:', record);
+            }
+            catch (err) {
+                console.error('Error sending:', err.message);
+            }
+        }, 'image/png');
+    });
 };
 
 export {
