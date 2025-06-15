@@ -15,10 +15,16 @@ from lsm_hand_tracker.processing.cleaning import clean_dataset
 from lsm_hand_tracker.processing.transformations import transform_features
 from lsm_hand_tracker.model import predict_label_proba
 
+origins = [
+    "https://lsm-hand-tracker.vercel.app",
+    "https://lsm-hand-tracker-6lr3ed0vf-codes-projects-7733c666.vercel.app",
+    # add any other preview domains you use...
+]
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
