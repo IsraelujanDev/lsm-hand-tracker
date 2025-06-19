@@ -1,7 +1,6 @@
 services:
   - type: web
     name: mlflow-server
-    runtime: docker
     plan: free
     dockerfilePath: Dockerfile.mlflow
     envVars:
