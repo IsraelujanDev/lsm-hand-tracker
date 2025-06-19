@@ -1,16 +1,16 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-# Establecer el directorio de trabajo
-WORKDIR /app
-
-# Copiar archivos necesarios
-COPY . .
-
-# Instalar MLflow
+# Instala MLflow y otras dependencias necesarias
 RUN pip install --no-cache-dir mlflow
 
-# Exponer el puerto en el que corre MLflow UI
+# Crea un directorio de trabajo
+WORKDIR /app
+
+# Copia solo la carpeta mlruns desde tu repo (Render va a reconstruirlo con base en tu repo)
+COPY mlruns /app/mlruns
+
+# Expone el puerto que MLflow usa por defecto
 EXPOSE 5000
 
-# Ejecutar MLflow UI al iniciar el contenedor
+# Comando para correr MLflow UI
 CMD ["mlflow", "ui", "--host", "0.0.0.0", "--port", "5000"]
