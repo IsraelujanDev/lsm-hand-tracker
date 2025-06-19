@@ -1,19 +1,24 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-# Create working directory
+# Instalamos dependencias esenciales
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Install MLflow
-RUN pip install mlflow==3.10
+# Copiar solo la carpeta mlruns con los experimentos
+COPY mlruns ./mlruns
 
-# Copy experiment data into container
-COPY mlruns /app/mlruns
+# Instalar MLflow
+RUN pip install mlflow
 
-# Set environment variable for MLflow tracking URI
+# Variable de entorno para que MLflow apunte al directorio correcto
 ENV MLFLOW_TRACKING_URI=file:///app/mlruns
 
-# Expose MLflow default port
+# Exponer el puerto 5000 (el que usaremos en Render)
 EXPOSE 5000
 
-# Start MLflow UI
+# Comando que inicia la interfaz web de MLflow
 CMD ["mlflow", "ui", "--host", "0.0.0.0", "--port", "5000"]

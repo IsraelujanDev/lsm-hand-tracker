@@ -1,8 +1,6 @@
 services:
   - type: web
     name: mlflow-server
+    env: docker
     plan: free
     dockerfilePath: Dockerfile.mlflow
-    envVars:
-      - key: MLFLOW_TRACKING_URI
-        value: file:///app/mlruns
