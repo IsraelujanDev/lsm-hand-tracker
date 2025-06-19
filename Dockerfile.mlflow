@@ -1,18 +1,19 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
-# Instala MLflow y dependencias mínimas
-RUN pip install --no-cache-dir mlflow==3.1.0
-
-# Crea carpeta de trabajo
+# Create working directory
 WORKDIR /app
 
-# Copia carpeta mlruns simbólica
-COPY ./mlruns ./mlruns
+# Install MLflow
+RUN pip install mlflow==3.10
 
-# Expón el puerto que usará MLflow
+# Copy experiment data into container
+COPY mlruns /app/mlruns
+
+# Set environment variable for MLflow tracking URI
+ENV MLFLOW_TRACKING_URI=file:///app/mlruns
+
+# Expose MLflow default port
 EXPOSE 5000
 
-# Comando para lanzar MLflow UI
+# Start MLflow UI
 CMD ["mlflow", "ui", "--host", "0.0.0.0", "--port", "5000"]
-
-COPY mlruns ./mlruns
