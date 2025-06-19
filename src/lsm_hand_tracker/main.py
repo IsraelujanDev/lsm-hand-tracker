@@ -27,6 +27,9 @@ app.add_middleware(
 VALID_LETTERS = set(string.ascii_uppercase) | {"Ñ"}
 LANDMARKER = create_landmarker(MODELS_DIR / "hand_landmarker.task")
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
 
 @app.post("/process/")
 async def process_image(
